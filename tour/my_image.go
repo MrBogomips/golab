@@ -18,7 +18,6 @@ func (Image) Bounds() image.Rectangle {
 }
 
 func (Image) At(x, y int) color.Color {
-
 	return color.RGBA{uint8(x ^ y), uint8(x ^ y), 200, 100}
 }
 
