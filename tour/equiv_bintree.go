@@ -30,11 +30,15 @@ func Same(t1, t2 *tree.Tree) bool {
 	go Walk(t1, ch1)
 	go Walk(t2, ch2)
 	for v1 := range ch1 {
-		if v1 != <-ch2 {
+		v2, ok := <-ch2
+		if !ok {
+			return false // t2 is smaller than t1
+		}
+		if v1 != v2 { // node mismatch
 			return false
 		}
 	}
-	_, ok := <-ch2
+	_, ok := <-ch2 // check t2 isn't bigger than t1
 	return !ok
 }
 
