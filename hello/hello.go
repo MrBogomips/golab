@@ -2,13 +2,16 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"runtime"
-
-	"github.com/MrBogomips/stringutil"
 )
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello World"))
+}
 
 func main() {
 	os := runtime.GOOS
 	fmt.Println(os)
-	fmt.Println(stringutil.Reverse("Hello World"))
+	fmt.Println("Hello World")
 }

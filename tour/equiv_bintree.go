@@ -29,23 +29,23 @@ func Same(t1, t2 *tree.Tree) bool {
 	ch1, ch2 := make(chan int), make(chan int)
 	go Walk(t1, ch1)
 	go Walk(t2, ch2)
-	for v1 := range ch1 {
-		v2, ok := <-ch2
-		if !ok {
-			return false // t2 is smaller than t1
+	for {
+		v1, ok1 := <-ch1
+		v2, ok2 := <-ch2
+		if !ok1 && !ok2 {
+			return true // both walking have been exhausted
 		}
-		if v1 != v2 { // node mismatch
+		if ok1 != ok2 || v1 != v2 {
 			return false
 		}
 	}
-	_, ok := <-ch2 // check t2 isn't bigger than t1
-	return !ok
 }
 
 func main() {
 	t := tree.New(1)
 	ch := make(chan int)
 	go Walk(t, ch)
+
 	for v := range ch {
 		fmt.Print(v, " ")
 	}
